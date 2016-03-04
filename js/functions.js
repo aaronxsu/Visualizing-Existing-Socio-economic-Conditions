@@ -9,6 +9,11 @@ The second slide shows the introduction
 
 ==============================================================================*/
 
+var slideOne = function (){
+  pageNumber = 1;
+  layerOne = L.geoJson(dataPhiladelphia).addTo(map);
+};
+
 /*==============================================================================
 
 Below are functions for the second slide
@@ -77,6 +82,86 @@ var setGraphVisibility = function (data, element){
     }).value();
   }
 };
+
+var slideTwo = function(){
+  pageNumber = 2;
+  map.setView([39.9522, -75.1639],15);
+  $('.legend').hide();
+  $('#slideOne').hide();
+  $('#slideTwo').show();
+  setGraphVisibility(graphIds, '');
+  var demoFeatureLayer = L.geoJson(dataDemographics, {style: defaultStyle}).addTo(map);
+  $('.demographicDropDown').change(function(){
+    switch ($('.demographicDropDown').val()) {
+      case "pop": {
+        demoFeatureLayer.setStyle(function(features){
+          return setDemoStyle(features.properties.Demo.PopClass);
+        });
+        setLegend("Population","1,455 - 2,388","2,389 - 2,599","2,600 - 3,198","3,199 - 3,688","3,689 - 5,197");
+        setGraphVisibility(graphIds, '#popGraph');
+        createBarChart("popGraph",popChartData);
+      }break;
+      case "sex": {
+        demoFeatureLayer.setStyle(function(features){
+          return defaultStyle();
+        });
+        $('.legend').hide();
+        setGraphVisibility(graphIds, '#sexGraph');
+        createPieChart("sexGraph",sexPieData);
+      }break;
+      case "male": {
+        demoFeatureLayer.setStyle(function(features){
+          return setDemoStyle(features.properties.Demo.MaleClass);
+        });
+        setLegend("Male Residents","31% - 44%","45% - 49%","50% - 52%","53% - 54%","55% - 64%");
+        setGraphVisibility(graphIds, '#maleGraph');
+        createBarChart("maleGraph",maleChartData);
+     }break;
+      case "female": {
+        demoFeatureLayer.setStyle(function(features){
+          return setDemoStyle(features.properties.Demo.FemaleClass);
+        });
+        setLegend("Female Residents","36% - 46%","47% - 50%","51% - 53%","54% - 56%","57% - 69%");
+        setGraphVisibility(graphIds, '#femaleGraph');
+        createBarChart("femaleGraph",femaleChartData);
+      }break;
+      case "race": {
+        demoFeatureLayer.setStyle(function(features){
+          return defaultStyle();
+        });
+        $('.legend').hide();
+        setGraphVisibility(graphIds, '#raceGraph');
+        createPieChart("raceGraph",racePieData);
+      }break;
+      case "white": {
+        demoFeatureLayer.setStyle(function(features){
+          return setDemoStyle(features.properties.Demo.WhiteClass);
+        });
+        setLegend("White Residents","34% - 66%","67% - 77%","78% - 85%","86% - 89%","90% - 92%");
+        setGraphVisibility(graphIds, '#whiteGraph');
+        createBarChart("whiteGraph",whiteChartData);
+     }break;
+      case "afam": {
+        demoFeatureLayer.setStyle(function(features){
+          return setDemoStyle(features.properties.Demo.AfricanAmericanClass);
+        });
+        setLegend("African American Residents","1% - 2%","3% - 5%"," 6% - 9%","10% - 13%","14% - 32%");
+        setGraphVisibility(graphIds, '#blackGraph');
+        createBarChart("blackGraph",blackChartData);
+      }break;
+      case "asian": {
+        demoFeatureLayer.setStyle(function(features){
+        return setDemoStyle(features.properties.Demo.AsianClass);
+        });
+        setLegend("Asian Residents","3% - 7%","8% - 11%","12% - 16%","17% - 26%","27% - 56%");
+        setGraphVisibility(graphIds, '#asianGraph');
+        createBarChart("asianGraph",asianChartData);
+      }break;
+      default:
+     }
+   });
+   layerTwo = demoFeatureLayer;
+};
 /*==============================================================================
 
 Below are functions for the third slide
@@ -84,6 +169,32 @@ The third slide shows the crime distibution.It allows users to search for crimin
 insidents based on location, and type of crime, crime details are in the pop up.
 
 ==============================================================================*/
+
+var selectTractTypeMonth = function(crime, tract, type, month){
+  var marker=[];
+  _.map(crime.features, function(data){
+    if(parseFloat(data.properties.Month) === month && data.properties.Tract === tract && parseFloat(data.properties.Type) === type){
+      marker.push([data.geometry.coordinates[1], data.geometry.coordinates[0]]);
+    }
+  });
+  return marker;
+}
+
+var slideThree = function (){
+  $('.legend').hide();
+  $('#slideTwo').hide();
+  $('#slideThree').show();
+  pageNumber = 3;
+  map.setView([39.9522, -75.1639],15);
+  var demoFeatureLayer = L.geoJson(dataDemographics).addTo(map);
+  $('.crimeTractDropDown').change(function(){
+    $('.crimeTypeDropDown').change(function(){
+      $('.crimeMonthDropDown').change(function(){
+        markerCrime = selectTractTypeMonth(dataCrime, parseFloat($('.crimeTractDropDown').val()), $('.crimeTypeDropDown').val(), parseFloat($('.crimeMonthDropDown').val()));
+      })
+    })
+  })
+};
 
 /*==============================================================================
 
@@ -93,6 +204,10 @@ can click and see detailed information in the sidebar
 
 ==============================================================================*/
 
+var slideFour = function (){
+
+};
+
 /*==============================================================================
 
 Below are functions for the fifth slide
@@ -100,3 +215,7 @@ The fifth slide shows information about indego bike share program. It is also a
 search-based slide.
 
 ==============================================================================*/
+
+var slideFive = function (){
+
+};

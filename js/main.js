@@ -1,6 +1,6 @@
 var map = L.map('map', {
   center: [39.9522, -75.1639],
-  zoom: 15
+  zoom: 11
 });
 var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -10,11 +10,27 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
   ext: 'png'
 }).addTo(map);
 
+var pageNumber;
+
+var layerOne;
+var layerTwo;
+var layerThree;
+var layerFour;
+var layerFive;
+
+var dataPhiladelphia;
+var dataDemographics;
+var dataCrime;
+
+var markerCrime=[];
+
 /*==============================================================================
 
 Below are data for the first slide
 
 ==============================================================================*/
+
+var censusTractPhiladelphia = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Philadelphia_Census_Tracts_2010.geojson";
 
 /*==============================================================================
 
@@ -23,7 +39,7 @@ Below are data for the second slide
 ==============================================================================*/
 
 //geoJson data
-var censusTractCenterCity = "https://raw.githubusercontent.com/aronxoxo/week-6/master/assignment/datasets/CenterCityTracts_Demographic.geojson";
+var censusTractCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/CenterCityTracts_Demographic.geojson";
 
 //store graph ids
 var graphIds = ['#popGraph','#sexGraph','#maleGraph','#femaleGraph','#raceGraph','#whiteGraph','#blackGraph','#asianGraph'];
@@ -149,11 +165,15 @@ var sexPieData = [
 
 ==============================================================================*/
 
+var crimeCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Crime2014CenterCity.geojson";
+
 /*==============================================================================
 
     Below are data for the fourth slide
 
 ==============================================================================*/
+
+var indegoBikeShareCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/BikeShareInCenterCity.geojson";
 
 /*==============================================================================
 

@@ -10,11 +10,13 @@
   <body>
     <!-- Sidebar -->
     <div class="sidebar">
-      <div id="intro">
+      <div id="slideOne">
         <h1>Title1</h1>
         <p class="main">Main Paragraph.</p>
         <p>Paragraph.</p>
         <br>
+      </div>
+      <div id = "slideTwo">
         <select class="demographicDropDown">
           <option value="blank">Demographics</option>
           <option value="pop">&nbspPopulation</option>
@@ -26,28 +28,73 @@
           <option value="afam">&nbsp&nbsp&nbspAfrican American</option>
           <option value="asian">&nbsp&nbsp&nbspAsian</option>
         </select>
+        <br>
+        <br>
+        <div>
+    			<canvas id="popGraph" height="450px" width="600px"></canvas>
+          <canvas id="sexGraph" height="450px" width="600px"></canvas>
+          <canvas id="maleGraph" height="450px" width="600px"></canvas>
+          <canvas id="femaleGraph" height="450px" width="600px"></canvas>
+          <canvas id="raceGraph" height="450px" width="600px"></canvas>
+          <canvas id="whiteGraph" height="450px" width="600px"></canvas>
+          <canvas id="blackGraph" height="450px" width="600px"></canvas>
+          <canvas id="asianGraph" height="450px" width="600px"></canvas>
+    		</div>
       </div>
-      <div id="results" style="display: none;">
-        <h1 class="day-of-week">Title2</h1>
-        <a href="#" class="close-classic"></a>
-        <p class="main">Main Paragraph.</p>
-        <p>Paragraph</p>
-        <p>Paragraph</p>
+      <div id = "slideThree">
+        <select class="crimeTractDropDown">
+          <option value="blank">Census Tract</option>
+          <option value="1.00">&nbsp1</option>
+          <option value="2.00">&nbsp2</option>
+          <option value="3.00">&nbsp3</option>
+          <option value="4.01">&nbsp4.01</option>
+          <option value="4.02">&nbsp4.02</option>
+          <option value="5.00">&nbsp5</option>
+          <option value="6.00">&nbsp6</option>
+          <option value="7.00">&nbsp7</option>
+          <option value="8.01">&nbsp8.01</option>
+          <option value="8.03">&nbsp8.03</option>
+          <option value="8.04">&nbsp8.04</option>
+          <option value="9.01">&nbsp9.01</option>
+          <option value="9.02">&nbsp9.02</option>
+          <option value="10.01">&nbsp10.01</option>
+          <option value="10.02">&nbsp10.02</option>
+          <option value="11.01">&nbsp11.01</option>
+          <option value="11.02">&nbsp11.02</option>
+          <option value="12.01">&nbsp12.01</option>
+          <option value="12.02">&nbsp12.02</option>
+          <option value="125.00">&nbsp125</option>
+          <option value="367.00">&nbsp367</option>
+          <option value="376.00">&nbsp376</option>
+        </select>
+        <br>
+        <select class="crimeTypeDropDown">
+          <option value="blank">Crime Types</option>
+          <option value="pop">&nbspAggravated Assault</option>
+          <option value="sex">&nbspBurglary</option>
+          <option value="male">&nbspHomicide</option>
+          <option value="female">&nbspTheft</option>
+          <option value="race">&nbspRobbery</option>
+        </select>
+        <br>
+        <select class="crimeMonthDropDown">
+          <option value="blank">Month</option>
+          <option value="1">&nbspJanuary</option>
+          <option value="2">&nbspFebruary</option>
+          <option value="3">&nbspMarch</option>
+          <option value="4">&nbspApril</option>
+          <option value="5">&nbspMay</option>
+          <option value="6">&nbspJune</option>
+          <option value="7">&nbspJuly</option>
+          <option value="8">&nbspAugust</option>
+          <option value="9">&nbspSeptember</option>
+          <option value="10">&nbspOctober</option>
+          <option value="11">&nbspNovember</option>
+          <option value="12">&nbspDecember</option>
+        </select>
+        <br>
+        <button type="button">Search</button>
       </div>
-      <br>
-      <br>
-      <div>
-  			<canvas id="popGraph" height="450px" width="600px"></canvas>
-        <canvas id="sexGraph" height="450px" width="600px"></canvas>
-        <canvas id="maleGraph" height="450px" width="600px"></canvas>
-        <canvas id="femaleGraph" height="450px" width="600px"></canvas>
-        <canvas id="raceGraph" height="450px" width="600px"></canvas>
-        <canvas id="whiteGraph" height="450px" width="600px"></canvas>
-        <canvas id="blackGraph" height="450px" width="600px"></canvas>
-        <canvas id="asianGraph" height="450px" width="600px"></canvas>
-  		</div>
-      <br>
-      <br>
       <div id="navigation">
         <button id="previous-button">Previous</button>
         <button id="next-button">Next</button>
@@ -86,8 +133,8 @@
     <script src="js/underscore.js"></script>
     <script src="js/leaflet.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/functions.js"></script>
     <script src="js/slideModel.js"></script>
+    <script src="js/functions.js"></script>
     <script src="js/Chart.js"></script>
   </body>
 </html>
