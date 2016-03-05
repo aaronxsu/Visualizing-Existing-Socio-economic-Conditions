@@ -165,7 +165,7 @@ var sexPieData = [
 
 ==============================================================================*/
 
-var crimeCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Crime2014CenterCity.geojson";
+var crimeCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Crime2014CC.geojson";
 
 /*==============================================================================
 
@@ -173,10 +173,12 @@ var crimeCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-te
 
 ==============================================================================*/
 
-var indegoBikeShareCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/BikeShareInCenterCity.geojson";
+var schoolCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/SchoolsInCenterCity.geojson";
 
 /*==============================================================================
 
     Below are data for the fifth slide
 
 ==============================================================================*/
+
+var indegoBikeShareCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/BikeShareInCenterCity.geojson";

@@ -83,3 +83,40 @@ td:last-child{
   left:20px;
   bottom:50px;
 }
+
+.leaflet-marker-icon {
+    border:3px solid rgba(255,255,255,0.5);
+    border-radius:50%;
+}
+
+.Kindergarten {
+    background-color: #b3e2cd;
+}
+
+.Pre-school {
+    background-color: #fdcdac;
+}
+
+.Elementary-School {
+    background-color: #cbd5e8;
+}
+
+.High-School {
+    background-color: #f4cae4;
+}
+
+.Elem-Mid-High {
+    background-color: #e6f5c9;
+}
+
+.Middle-High {
+    background-color: #fff2ae;
+}
+
+.Tutoring {
+    background-color: #f1e2cc;
+}
+
+.Elem-Middle {
+    background-color: #cccccc;
+}

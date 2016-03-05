@@ -12,13 +12,17 @@ $.ajax(censusTractCenterCity).done(function(data) {
 
 $.ajax(crimeCenterCity).done(function(data) {
   dataCrime = JSON.parse(data);
-  console.log(dataCrime);
+});
+
+$.ajax(schoolCenterCity).done(function(data) {
+  dataSchool = JSON.parse(data);
 });
 
 $(document).ready(function() {
   $('.legend').hide();
   $('#slideTwo').hide();
   $('#slideThree').hide();
+  $('#slideFour').hide();
   $("#next-button").click(function(){
     if(pageNumber === 1){
      map.removeLayer(layerOne);

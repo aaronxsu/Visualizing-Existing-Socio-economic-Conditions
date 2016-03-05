@@ -70,11 +70,11 @@
         <br>
         <select class="crimeTypeDropDown">
           <option value="blank">Crime Types</option>
-          <option value="pop">&nbspAggravated Assault</option>
-          <option value="sex">&nbspBurglary</option>
-          <option value="male">&nbspHomicide</option>
-          <option value="female">&nbspTheft</option>
-          <option value="race">&nbspRobbery</option>
+          <option value="Aggravated Assault">&nbspAggravated Assault</option>
+          <option value="Burglary">&nbspBurglary</option>
+          <option value="Homicide">&nbspHomicide</option>
+          <option value="Thefts">&nbspThefts</option>
+          <option value="Robbery">&nbspRobbery</option>
         </select>
         <br>
         <select class="crimeMonthDropDown">
@@ -93,11 +93,42 @@
           <option value="12">&nbspDecember</option>
         </select>
         <br>
-        <button type="button">Search</button>
+        <button type="button" id="crimeSearchButton">Search</button>
+        <button type="button" id="clearCrimeSearchButton">Clear Search</button>
+      </div>
+      <div id = "slideFour">
+        <h4>Select Grade Level</h4>
+        <table>
+          <tr>
+            <td><input type="checkbox" id="ck-Kindergarten" value="Kindergarten">&nbsp Kindergarten</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="ck-Pre-school" value="Pre-school">&nbsp Pre-School</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="ck-Elementary-School" value="Elementary School">&nbsp Elementary School</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="ck-High-School" value="High School">&nbsp High School</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="ck-Elem-Middle" value="Elem/Middle">&nbsp Elementary/Middle School</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="ck-Middle-High" value="Middle/High">&nbsp Middle/High School</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="ck-Elem-Mid-High" value="Elem/Mid/High">&nbsp Elementary/Middle/High School</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="ck-Tutoring" value="Tutoring">&nbsp Tutoring</td>
+          </tr>
+        </table><br>
+        <button type="button" id="clearSchoolMarker">Clear Markers</button>
       </div>
       <div id="navigation">
-        <button id="previous-button">Previous</button>
-        <button id="next-button">Next</button>
+        <button type="button" id="previous-button">Previous</button>
+        <button type="button" id="next-button">Next</button>
       </div>
     </div>
     <!-- Map -->

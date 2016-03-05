@@ -170,15 +170,34 @@ insidents based on location, and type of crime, crime details are in the pop up.
 
 ==============================================================================*/
 
-var selectTractTypeMonth = function(crime, tract, type, month){
-  var marker=[];
-  _.map(crime.features, function(data){
-    if(parseFloat(data.properties.Month) === month && data.properties.Tract === tract && parseFloat(data.properties.Type) === type){
-      marker.push([data.geometry.coordinates[1], data.geometry.coordinates[0]]);
+var selectTractTypeMonth = function(tract, type, month){
+  _.each(dataCrime.features, function(data){
+    if(parseFloat(data.properties.Month) === parseFloat(month) && parseFloat(data.properties.Tract) === parseFloat(tract) && data.properties.Type === type){
+      markerCrime.push([data.geometry.coordinates[1], data.geometry.coordinates[0]]);
     }
   });
-  return marker;
-}
+};
+
+var createCrimeMarkers = function() {
+  return _.map(data, function(datum){
+    return L.marker(datum);
+  });
+};
+
+var plotCrimeMarkers = function(markers){
+  _.each(markers, function(array){
+    array.addTo(map);
+  });
+};
+
+var clearCrimeMarker = function(markers){
+  _.each(markers, function(obj){
+    map.removeLayer(obj);
+  });
+  markers=[];
+  markerCrime = [];
+};
+
 
 var slideThree = function (){
   $('.legend').hide();
@@ -186,14 +205,40 @@ var slideThree = function (){
   $('#slideThree').show();
   pageNumber = 3;
   map.setView([39.9522, -75.1639],15);
-  var demoFeatureLayer = L.geoJson(dataDemographics).addTo(map);
+  layerThree = L.geoJson(dataDemographics).addTo(map);
+  var markers = [];
   $('.crimeTractDropDown').change(function(){
+    // markerCrime = [];
+    // _.each(dataDemographics.features, function(data){
+    //   if(parseFloat(data.properties.NAME10) === parseFloat($('.crimeTractDropDown').val())){
+    //     southWest = [L.latLngBounds(data.geometry.coordinates).getSouthWest().lng, L.latLngBounds(data.geometry.coordinates).getSouthWest().lat];
+    //     northEast = [L.latLngBounds(data.geometry.coordinates).getNorthEast().lng, L.latLngBounds(data.geometry.coordinates).getNorthEast().lat];
+    //     bounds = L.latLngBounds(southWest, northEast);
+    //     map.fitBounds(bounds);
+    //   }
+    // });
     $('.crimeTypeDropDown').change(function(){
       $('.crimeMonthDropDown').change(function(){
-        markerCrime = selectTractTypeMonth(dataCrime, parseFloat($('.crimeTractDropDown').val()), $('.crimeTypeDropDown').val(), parseFloat($('.crimeMonthDropDown').val()));
+        $('#crimeSearchButton').click(function(){
+          selectTractTypeMonth($('.crimeTractDropDown').val(), $('.crimeTypeDropDown').val(), $('.crimeMonthDropDown').val());
+          console.log(markerCrime)
+          if (markerCrime.length === 0){
+            alert("Good! No criminal incidents in your selection!");
+          }
+          else{
+            plotCrimeMarkers(markers = createCrimeMarkers(markerCrime));
+          }
+        })
       })
     })
   })
+
+  $('#clearCrimeSearchButton').click(function(){
+    clearCrimeMarker(markers);
+    $('.crimeTractDropDown').val("blank");
+    $('.crimeTypeDropDown').val("blank");
+    $('.crimeMonthDropDown').val("blank");
+  });
 };
 
 /*==============================================================================
@@ -203,9 +248,142 @@ The fourth slide shows different types of schools in the census tract level. Use
 can click and see detailed information in the sidebar
 
 ==============================================================================*/
+function school (name, address, zipcode, phone, type, lat, lng){
+  this.name = name;
+  this.address = address + ", Philadelphia, PA " + zipcode;
+  this.phone = phone;
+  this.type = type;
+  this.lat = lat;
+  this.lng = lng;
+};
+
+var schoolLevel =  function(level){
+  var thisSchool=[];
+  _.map(dataSchool.features, function(datum){
+    if(datum.properties.GRADE_LEVE === level){
+      var eachSchool = new school(datum.properties.FACIL_NAME,datum.properties.FACIL_ADDR,
+        datum.properties.ZIPCODE, datum.properties.FACIL_TELE, datum.properties.TYPE,
+        datum.geometry.coordinates[1], datum.geometry.coordinates[0]);
+      thisSchool.push(eachSchool);
+    }
+  });
+  return thisSchool;
+};
+
+var createSchoolMarker = function (school, customIcon){
+  return _.map(school, function(datum){
+    var marker = L.marker([datum.lat, datum.lng], {icon: customIcon});
+    var popup = "<b>"+datum.name+"</b><br>";
+    popup += "<i>"+datum.address+"</i><br>";
+    popup += "<u>"+datum.phone+"</u><br>";
+    popup += datum.type + " School";
+    marker.addTo(map).bindPopup(popup).openPopup();
+    return marker;
+  });
+};
+
+var clearSchoolMarker = function(markers){
+  _.each(markers, function(data){
+    map.removeLayer(data);
+  });
+  markers=[];
+};
+
+var clearAllMarker = function(markers){
+  _.each(markers, function(data){
+    _.each(data, function(datum){
+      map.removeLayer(datum);
+    });
+  });
+  markers=[];
+};
 
 var slideFour = function (){
+  clearCrimeMarker();
+  $('.legend').hide();
+  $('#slideTwo').hide();
+  $('#slideThree').hide();
+  $('#slideFour').show();
+  pageNumber = 4;
+  map.setView([39.9522, -75.1639],15);
+  layerFour = L.geoJson(dataDemographics, {style: defaultStyle}).addTo(map);
+  var levelK = schoolLevel("Kindergarten");
+  var levelP = schoolLevel("Pre-school");
+  var levelE = schoolLevel("Elementary School");
+  var levelH = schoolLevel("High School");
+  var levelEM = schoolLevel("Elem/Middle");
+  var levelMH = schoolLevel("Middle/High");
+  var levelEMH = schoolLevel("Elem/Mid/High");
+  var levelT = schoolLevel("Tutoring");
+  var marker = [];
 
+  $('#ck-Kindergarten').change(function(){
+    if($('#ck-Kindergarten').prop("checked") === true){
+      marker.push(markerK = createSchoolMarker(levelK, L.divIcon({className: 'Kindergarten'})));
+    }
+    else{
+      clearSchoolMarker(markerK);
+    }
+  });
+  $('#ck-Pre-school').change(function(){
+    if($('#ck-Pre-school').prop("checked") === true){
+      marker.push(markerP = createSchoolMarker(levelP, L.divIcon({className: 'Pre-school'})));
+    }
+    else{
+      clearSchoolMarker(markerP);
+    }
+  });
+  $('#ck-Elementary-School').change(function(){
+    if($('#ck-Elementary-School').prop("checked") === true){
+      marker.push(markerE = createSchoolMarker(levelE, L.divIcon({className: 'Elementary-School '})));
+    }
+    else{
+      clearSchoolMarker(markerE);
+    }
+  });
+  $('#ck-High-School').change(function(){
+    if($('#ck-High-School').prop("checked") === true){
+      marker.push(markerH = createSchoolMarker(levelH, L.divIcon({className: 'High-School'})));
+    }
+    else{
+      clearSchoolMarker(markerH);
+    }
+  });
+  $('#ck-Elem-Middle').change(function(){
+    if($('#ck-Elem-Middle').prop("checked") === true){
+      marker.push(markerEM = createSchoolMarker(levelEM, L.divIcon({className: 'Elem-Middle'})));
+    }
+    else{
+      clearSchoolMarker(markerEM);
+    }
+  });
+  $('#ck-Middle-High').change(function(){
+    if($('#ck-Middle-High').prop("checked") === true){
+      marker.push(markerMH = createSchoolMarker(levelMH, L.divIcon({className: 'Middle-High'})));
+    }
+    else{
+      clearSchoolMarker(markerMH);
+    }
+  });
+  $('#ck-Elem-Mid-High').change(function(){
+    if($('#ck-Elem-Mid-High').prop("checked") === true){
+      marker.push(markerEMH = createSchoolMarker(levelEMH, L.divIcon({className: 'Elem-Mid-High'})));
+    }
+    else{
+      clearSchoolMarker(markerEMH);
+    }
+  });
+  $('#ck-Tutoring').change(function(){
+    if($('#ck-Tutoring').prop("checked") === true){
+      marker.push(markerT = createSchoolMarker(levelT, L.divIcon({className: 'Tutoring'})));
+    }
+    else{
+      clearSchoolMarker(markerT);
+    }
+  });
+  $('#clearSchoolMarker').click(function(){
+    clearAllMarker(marker);
+  });
 };
 
 /*==============================================================================
