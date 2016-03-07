@@ -10,7 +10,7 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
   ext: 'png'
 }).addTo(map);
 
-var pageNumber;
+var pageNumber = 0;
 
 var layerOne;
 var layerTwo;
@@ -22,7 +22,10 @@ var dataPhiladelphia;
 var dataDemographics;
 var dataCrime;
 
-var markerCrime=[];
+var selectedCrime=[];
+var markersCrime = [];
+
+var indegoMarkers = [];
 
 /*==============================================================================
 

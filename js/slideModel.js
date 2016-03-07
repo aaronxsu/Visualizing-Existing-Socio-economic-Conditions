@@ -18,11 +18,17 @@ $.ajax(schoolCenterCity).done(function(data) {
   dataSchool = JSON.parse(data);
 });
 
+$.ajax(indegoBikeShareCenterCity).done(function(data) {
+  dataBikeShare = JSON.parse(data);
+});
+
 $(document).ready(function() {
   $('.legend').hide();
   $('#slideTwo').hide();
   $('#slideThree').hide();
   $('#slideFour').hide();
+  $('#slideFive').hide();
+
   $("#next-button").click(function(){
     if(pageNumber === 1){
      map.removeLayer(layerOne);
@@ -46,24 +52,29 @@ $(document).ready(function() {
    }
   });
 
-  $("#previous-button").click(function(e){
+  $('#previous-button').click(function(){
     if(pageNumber === 1){
-     map.removeLayer(layerOne);
-     slideFive();
+      console.log(pageNumber);
+      map.removeLayer(layerOne);
+      slideFive();
    }
    else if(pageNumber === 2){
+     console.log(pageNumber);
      map.removeLayer(layerTwo);
      slideOne();
    }
    else if(pageNumber === 3){
+     console.log(pageNumber);
      map.removeLayer(layerThree);
      slideTwo();
    }
    else if(pageNumber === 4){
+     console.log(pageNumber);
      map.removeLayer(layerFour);
      slideThree();
    }
    else if(pageNumber === 5){
+     console.log(pageNumber);
      map.removeLayer(layerFive);
      slideFour();
    }

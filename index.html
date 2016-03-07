@@ -9,15 +9,34 @@
   </head>
   <body>
     <!-- Sidebar -->
+    <div class="header"><h1>Existing Conditions in Center City, Philadelphia, PA</h1></div>
     <div class="sidebar">
-      <div id="slideOne">
-        <h1>Title1</h1>
-        <p class="main">Main Paragraph.</p>
-        <p>Paragraph.</p>
-        <br>
+      <div>
+        <h1 id = "slideOne">1. Introduction</h1>
+        <div id = "slideOne-1">
+          <p class="main"> This interactive map will go through the existing conditions in Center
+            City of Philadelphia County in Pennsylvania. You can do the following:</p>
+          <p class="second">(1) Understand the constitution of Center City by census tracts and population.</p>
+          <p class="second">(2) Check population, gender and race distribution in the census tract level.</p>
+          <p class="second">(3) See the criminal incidents by selecting a census tract, a crime type, and a month.</p>
+          <p class="second">(4) Get to know types of schools in each grade level.</p>
+          <p class="second">(5) Filter Indego Bike Share stations by the numbers of available bikes and docks.</p>
+          <input type = "button" id = "show-cc-btn" value = "Let's Get Started >>"></input>
+        </div>
+        <div id = "slideOne-2">
+        <p class="main">Center City is bounded by Pine Street to the south, the Delaware River to the
+           east, the Schuylkill River to the west, and Vine Street to the north.</p>
+        <h4 class = "note"><i>*Click on each census tract to see its name and population in 2014.</i></h4>
+        <h3>Name: <span id = "tractName"></span></h3>
+        <h3>Population: <span id = "tractPop"></span></h3>
+        </div>
       </div>
       <div id = "slideTwo">
-        <select class="demographicDropDown">
+        <h1>2. Demographics</h1>
+        <p class="main"> In this slide, you will have an idea of population, gender, and race distribution
+           in Center City.</p>
+        <h4 class = "note"><i>*Just choose from the below drop down to see the information you are interested in.</i></h4>
+        <select class = "dropDown" id="demographicDropDown">
           <option value="blank">Demographics</option>
           <option value="pop">&nbspPopulation</option>
           <option value="sex">&nbspSex</option>
@@ -42,7 +61,12 @@
     		</div>
       </div>
       <div id = "slideThree">
-        <select class="crimeTractDropDown">
+        <h1>3. Criminal Incidents</h1>
+        <p class="main"> In this slide, you will get to know the criminal incidents happened in 2014 by crime type
+        and by month in the census tract level.</p>
+        <h4 class = "note"><i>*Please use all the conditions in the below drop down.</i></h4>
+        <h4 class = "note"><i>**CLEAR SEARCH <u>BEFORE</u> NAVIGATING TO OTHER PAGES!**</i></h4>
+        <select class = "dropDown" id="crimeTractDropDown">
           <option value="blank">Census Tract</option>
           <option value="1.00">&nbsp1</option>
           <option value="2.00">&nbsp2</option>
@@ -67,8 +91,8 @@
           <option value="367.00">&nbsp367</option>
           <option value="376.00">&nbsp376</option>
         </select>
-        <br>
-        <select class="crimeTypeDropDown">
+        <br><br>
+        <select class = "dropDown" id="crimeTypeDropDown">
           <option value="blank">Crime Types</option>
           <option value="Aggravated Assault">&nbspAggravated Assault</option>
           <option value="Burglary">&nbspBurglary</option>
@@ -76,8 +100,8 @@
           <option value="Thefts">&nbspThefts</option>
           <option value="Robbery">&nbspRobbery</option>
         </select>
-        <br>
-        <select class="crimeMonthDropDown">
+        <br><br>
+        <select class = "dropDown" id="crimeMonthDropDown">
           <option value="blank">Month</option>
           <option value="1">&nbspJanuary</option>
           <option value="2">&nbspFebruary</option>
@@ -92,13 +116,16 @@
           <option value="11">&nbspNovember</option>
           <option value="12">&nbspDecember</option>
         </select>
-        <br>
-        <button type="button" id="crimeSearchButton">Search</button>
-        <button type="button" id="clearCrimeSearchButton">Clear Search</button>
+        <br><br>
+        <input type="button" id="crimeSearchButton" value ="Search"></input>
+        <input type="button" id="clearCrimeSearchButton" value = "Clear Search"></input>
       </div>
       <div id = "slideFour">
-        <h4>Select Grade Level</h4>
-        <table>
+        <h1>4. Schools</h1>
+        <p class="main"> In this slide, you can check the school information in Center City.</p>
+        <h4 class = "note"><i>*Just simply check or uncheck the below grade levels.</i></h4>
+        <h3>Select Grade Level</h3>
+        <table class = "ck-table">
           <tr>
             <td><input type="checkbox" id="ck-Kindergarten" value="Kindergarten">&nbsp Kindergarten</td>
           </tr>
@@ -123,12 +150,36 @@
           <tr>
             <td><input type="checkbox" id="ck-Tutoring" value="Tutoring">&nbsp Tutoring</td>
           </tr>
+        </table>
+        <button type="button" id="clearSchoolMarker">Clear Selection</button>
+      </div>
+      <div id = "slideFive">
+        <h1>5. Indego Bike Share</h1>
+        <p class="main"> In this slide, you will have an idea of the distribution of Indego Bike Share stations in Center
+        City. You can filter the result by the number of available bikes and docks in a station.</p>
+        <h4 class = "note"><i>*Just simply select from the drop down or check the checkboxes.</i></h4>
+        <table class = "bss-table">
+          <tr>
+            <td>Available Bikes No Less Than:</td>
+          </tr>
+          <tr>
+            <td><input id="bike-num-input" type = "number"></td>
+            <td><input type="checkbox" id="ck-bike">Any Amount</td>
+          </tr>
+          <tr>
+            <td>Available Docks No Less Than:</td>
+          </tr>
+          <tr>
+            <td><input id="dock-num-input" type = "number"></td>
+            <td><input type="checkbox" id="ck-dock">Any Amount</td>
+          </tr>
         </table><br>
-        <button type="button" id="clearSchoolMarker">Clear Markers</button>
+        <button type="button" id="searchBikeShare-btn">Search Bike Share</button>
+        <button type="button" id="clearBikeShare-btn" >Clear Search Result</button>
       </div>
       <div id="navigation">
-        <button type="button" id="previous-button">Previous</button>
-        <button type="button" id="next-button">Next</button>
+        <input type="button" id="previous-button" class = "navigation-btn" value="<< Previous"></input>
+        <input type="button" id="next-button" class = "navigation-btn" value = "Next >>"></input>
       </div>
     </div>
     <!-- Map -->
