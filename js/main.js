@@ -10,6 +10,7 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
   ext: 'png'
 }).addTo(map);
 
+var sidebarSlideIds = ['.legend','#slideOne','#slideOne-1','#slideOne-2','#slideTwo','#slideThree','#slideFour','#slideFive'];
 var pageNumber = 0;
 
 var layerOne;
@@ -17,13 +18,6 @@ var layerTwo;
 var layerThree;
 var layerFour;
 var layerFive;
-
-var dataPhiladelphia;
-var dataDemographics;
-var dataCrime;
-
-var selectedCrime=[];
-var markersCrime = [];
 
 var indegoMarkers = [];
 
@@ -34,6 +28,7 @@ Below are data for the first slide
 ==============================================================================*/
 
 var censusTractPhiladelphia = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Philadelphia_Census_Tracts_2010.geojson";
+var dataPhiladelphia;
 
 /*==============================================================================
 
@@ -43,9 +38,12 @@ Below are data for the second slide
 
 //geoJson data
 var censusTractCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/CenterCityTracts_Demographic.geojson";
+var dataDemographics;
 
-//store graph ids
+//store sidebar graph ids
 var graphIds = ['#popGraph','#sexGraph','#maleGraph','#femaleGraph','#raceGraph','#whiteGraph','#blackGraph','#asianGraph'];
+//store sidebar legend ids
+var sidebarLegendIds = ['#sidebar-legend-first','#sidebar-legend-second','#sidebar-legend-third','#sidebar-legend-label-first','#sidebar-legend-label-second','#sidebar-legend-label-third'];
 
 //data for bar charts
 var popChartData = {
@@ -53,10 +51,10 @@ var popChartData = {
   datasets : [
     {
       label:"Population",
-      fillColor : "rgba(151,187,205,0.5)",
-      strokeColor : "rgba(151,187,205,0.8)",
-      highlightFill : "rgba(151,187,205,0.75)",
-      highlightStroke : "rgba(151,187,205,1)",
+      fillColor : "rgba(204, 235, 197,0.5)",
+      strokeColor : "rgba(204, 235, 197,0.8)",
+      highlightFill : "rgba(154,215,140,0.75)",
+      highlightStroke : "rgba(154,215,140,1)",
       data : [3527,2285,3438,2566,3067,2388,1455,3097,1764,3688,3785,1853,2599,2400,3340,3198,2433,4012,5046,5197,2590,2666]
     }
   ]
@@ -66,10 +64,10 @@ var whiteChartData = {
   datasets : [
     {
       label:"White Resident %",
-      fillColor : "rgba(179, 226, 205,0.5)",
-      strokeColor : "rgba(179, 226, 205,0.8)",
-      highlightFill : "rgba(142, 212, 181,0.75)",
-      highlightStroke : "rgba(142, 212, 181,1)",
+      fillColor : "rgba(179, 205, 227,0.5)",
+      strokeColor : "rgba(179, 205, 227,0.8)",
+      highlightFill : "rgba(123, 168, 206,0.75)",
+      highlightStroke : "rgba(123, 168, 206,1)",
       data : [0.77, 0.34,0.82,0.6,0.9,0.44,0.74,0.66,0.75,0.91,0.84,0.68,0.73,0.87,0.92,0.89,0.89,0.89,0.85,0.84,0.77,0.48,]
     }
   ]
@@ -79,10 +77,10 @@ var blackChartData = {
   datasets : [
     {
       label:"Black or African American Resident %",
-      fillColor : "rgba(253, 205, 172,0.5)",
-      strokeColor : "rgba(253, 205, 172,0.8)",
-      highlightFill : "rgba(252, 175, 122,0.75)",
-      highlightStroke : "rgba(252, 175, 122,1)",
+      fillColor : "rgba(251, 180, 174,0.5)",
+      strokeColor : "rgba(251, 180, 174,0.8)",
+      highlightFill : "rgba(247, 113, 101,0.75)",
+      highlightStroke : "rgba(247, 113, 101,1)",
       data : [0.11,0.06,0.05,0.13,0.02,0.32,0.1,0.11,0.13,0.01,0.03,0.09,0.05,0.01,0.01,0.05,0.04,0.01,0.07,0.06,0.19,0.25,]
     }
   ]
@@ -92,10 +90,10 @@ var asianChartData = {
   datasets : [
     {
       label:"Asian Resident %",
-      fillColor : "rgba(203, 213, 232,0.5)",
-      strokeColor : "rgba(203, 213, 232,0.8)",
-      highlightFill : "rgba(168, 184, 216,0.75)",
-      highlightStroke : "rgba(168, 184, 216,1)",
+      fillColor : "rgba(222, 203, 228,0.5)",
+      strokeColor : "rgba(222, 203, 228,0.8)",
+      highlightFill : "rgba(190,153,202,0.75)",
+      highlightStroke : "rgba(190,153,202,1)",
       data : [0.09,0.56,0.1,0.26,0.08,0.16,0.14,0.22,0.07,0.05,0.11,0.21,0.2,0.06,0.06,0.05,0.03,0.05,0.06,0.06,0.03,0.2]
     }
   ]
@@ -105,10 +103,10 @@ var maleChartData = {
   datasets : [
     {
       label:"Male Resident %",
-      fillColor : "rgba(151,187,205,0.5)",
-      strokeColor : "rgba(151,187,205,0.8)",
-      highlightFill : "rgba(151,187,205,0.75)",
-      highlightStroke : "rgba(151,187,205,1)",
+      fillColor : "rgba(179, 205, 227,0.5)",
+      strokeColor : "rgba(179, 205, 227,0.8)",
+      highlightFill : "rgba(123, 168, 206,0.75)",
+      highlightStroke : "rgba(123, 168, 206,1)",
       data : [0.49,0.54,0.52,0.49,0.31,0.64,0.54,0.53,0.54,0.41,0.47,0.46,0.44,0.43,0.46,0.5,0.5,0.43,0.46,0.51,0.54,0.61]
     }
   ]
@@ -118,10 +116,10 @@ var femaleChartData = {
   datasets : [
     {
       label:"Female Resident %",
-      fillColor : "rgba(205, 169, 151,0.5)",
-      strokeColor : "rgba(205, 169, 151,0.8)",
-      highlightFill : "rgba(205, 169, 151,0.75)",
-      highlightStroke : "rgba(205, 169, 151,1)",
+      fillColor : "rgba(251, 180, 174,0.5)",
+      strokeColor : "rgba(251, 180, 174,0.8)",
+      highlightFill : "rgba(247, 113, 101,0.75)",
+      highlightStroke : "rgba(247, 113, 101,1)",
       data : [0.51,0.47,0.48,0.51,0.69,0.36,0.46,0.47,0.46,0.59,0.53,0.54,0.56,0.57,0.54,0.5,0.51,0.57,0.54,0.49,0.46,0.39]
     }
   ]
@@ -131,34 +129,34 @@ var femaleChartData = {
 var sexPieData = [
     {
       value: 32256,
-      color:"#97bbcd",
-      highlight: "#75a4bc",
+      color:"#b3cde3",
+      highlight: "#7ba8ce",
       label: "Male Residents"
     },
     {
       value: 34138,
-      color: "#cda997",
-      highlight: "#bc8d75",
+      color: "#fbb4ae",
+      highlight: "#f77165",
       label: "Female Residents"
     }
   ];
   var racePieData = [
       {
         value: 51438,
-        color:"#b3e2cd",
-        highlight: "#8ed4b5",
+        color:"#b3cde3",
+        highlight: "#7ba8ce",
         label: "Whie Residents"
       },
       {
         value: 5105,
-        color: "#fdcdac",
-        highlight: "#fcaf7a",
-        label: "Black or African American Residents"
+        color: "#fbb4ae",
+        highlight: "#f77165",
+        label: "African American Residents"
       },
       {
         value: 7723,
-        color: "#cbd5e8",
-        highlight: "#a8b8d8",
+        color: "#decbe4",
+        highlight: "#be99ca",
         label: "Asian Residents"
       }
     ];
@@ -169,6 +167,9 @@ var sexPieData = [
 ==============================================================================*/
 
 var crimeCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Crime2014CC.geojson";
+var dataCrime;
+var markersCrime = [];
+
 
 /*==============================================================================
 

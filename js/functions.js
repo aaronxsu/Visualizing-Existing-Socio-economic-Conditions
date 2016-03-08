@@ -4,22 +4,49 @@ Week 6 Assignment: Midterm Function Signatures
 
 /*==============================================================================
 
-Below are functions for the first slide
-The second slide shows the introduction
+Below are functions for all slides
 
 ==============================================================================*/
 
-var slideOneDefaultStyle = function(){
+//Show the sidebar slide marked by ID peremeter
+//Return the array of IDs of sidebar slides that needs to be hidden
+var slidesToHide= function (data, ID){
+  $(ID).show();
+  return _.filter(data, function(datum){
+    return datum !== ID;
+  });
+}
+//Hide the sidebar slides come from data parameter(an array of IDs)
+var hideSlides = function(data){
+  _.each(data, function(datum){
+    $(datum).hide();
+  });
+};
+//Set the zoom level and the current page number
+var slideInitialize = function(zoom, page){
+  map.setView([39.9522, -75.1639], zoom);
+  pageNumber = page;
+};
+//Set the look of the default basemap layer with only fillColor to be changed
+var slideDefaultStyle = function(colorToFill){
   return {
     weight: 2,
     opacity: 1,
     color: "white",
     dashArray: '3',
     fillOpacity: 0.7,
-    fillColor: '#edf8e9'
+    fillColor: colorToFill
   };
 }
 
+/*==============================================================================
+
+Below are functions for the first slide
+The first slide shows the introduction
+
+==============================================================================*/
+
+//Update the name of the census tract and its population shown on the sidebar once this tract is clicked
 var eachFeature = function(features, layer) {
   layer.on('click', function (e) {
     $('#tractName').text(features.properties.NAMELSAD10);
@@ -29,19 +56,13 @@ var eachFeature = function(features, layer) {
 };
 
 var slideOne = function (){
-  clearIndegoMarker(indegoMarkers);
-  $('.legend').hide();
-  $('#slideOne').show();
-  $('#slideOne-1').show();
-  $('#slideOne-2').hide();
-  $('#slideTwo').hide();
-  $('#slideThree').hide();
-  $('#slideFour').hide();
-  $('#slideFive').hide();
-  pageNumber = 1;
-  map.setView([39.9522, -75.1639],11);
-  layerOne = L.geoJson(dataPhiladelphia, {style: slideOneDefaultStyle}).addTo(map);
-
+  //Initialize the introduction page, and add the Philadelphia City layer onto the map
+  slideInitialize(11, 1);
+  hideSlides(slidesToHide(slidesToHide(sidebarSlideIds, '#slideOne'),'#slideOne-1'));
+  layerOne = L.geoJson(dataPhiladelphia, {style: slideDefaultStyle('#edf8e9')}).addTo(map);
+  //Once "Let's get started button" is clicked, show the new sidebar,
+  //remove the previous layer, zoom in the map, and add the click function
+  //to the layer
   $('#show-cc-btn').click(function(){
     $('#slideOne-1').hide();
     $('#slideOne-2').show();
@@ -49,7 +70,7 @@ var slideOne = function (){
     map.setView([39.9522, -75.1639],15);
     layerOne = L.geoJson(dataDemographics,{
       onEachFeature: eachFeature,
-      style: slideOneDefaultStyle
+      style: slideDefaultStyle('#edf8e9')
     }).addTo(map);
   });
 };
@@ -58,18 +79,9 @@ var slideOne = function (){
 
 Below are functions for the second slide
 The second slide shows the demographics information of Center City in 2014
+
 ==============================================================================*/
-//set the default style of the thematic map
-var slideTwodefaultStyle = function(){
-  return {
-    weight: 2,
-    opacity: 1,
-    color: "white",
-    dashArray: '3',
-    fillOpacity: 0.7,
-    fillColor: "#fff2cb"
-  };
-}
+
 //set the style for thematic maps
 var setDemoStyle = function(property){
   switch (property) {
@@ -81,7 +93,7 @@ var setDemoStyle = function(property){
     default:
   }
 };
-//set the legend for different thematic maps
+//set the label of legend on different thematic maps
 var setLegend = function(title, labelOne, labelTwo, labelThree, labelFour, labelFive){
   $('.legend').show();
   $('#legend-title').text(title);
@@ -97,7 +109,6 @@ var createBarChart = function(id, barChartData){
   var myBarChart = new Chart(ctx).Bar(barChartData, {
     responsive : true
   });
-  console.log(ctx,myBarChart);
 };
 //create pie charts on the sidebar
 var createPieChart = function(id, pieChartData){
@@ -124,21 +135,15 @@ var setGraphVisibility = function (data, element){
 };
 
 var slideTwo = function(){
-  clearCrimeMarker(markersCrime);
+  slideInitialize(15, 2);
+  hideSlides(slidesToHide(sidebarSlideIds, '#slideTwo'));
+  var demoFeatureLayer = L.geoJson(dataDemographics, {style: slideDefaultStyle('#fff2cb')}).addTo(map);
   $('#demographicDropDown').val("blank");
-  pageNumber = 2;
-  map.setView([39.9522, -75.1639],15);
-  $('.legend').hide();
-  $('#slideOne-1').hide();
-  $('#slideOne-2').hide();
-  $('#slideOne').hide();
-  $('#slideTwo').show();
-  $('#slideThree').hide();
-  $('#slideFour').hide();
-  $('#slideFive').hide();
   setGraphVisibility(graphIds, '');
-  var demoFeatureLayer = L.geoJson(dataDemographics, {style: slideTwodefaultStyle}).addTo(map);
+  setGraphVisibility(sidebarLegendIds, '');
+
   $('#demographicDropDown').change(function(){
+    setGraphVisibility(sidebarLegendIds, '');
     switch ($('#demographicDropDown').val()) {
       case "pop": {
         demoFeatureLayer.setStyle(function(features){
@@ -150,11 +155,14 @@ var slideTwo = function(){
       }break;
       case "sex": {
         demoFeatureLayer.setStyle(function(features){
-          return slideTwodefaultStyle();
+          return slideDefaultStyle('#fff2cb');
         });
         $('.legend').hide();
         setGraphVisibility(graphIds, '#sexGraph');
         createPieChart("sexGraph",sexPieData);
+        hideSlides(slidesToHide(slidesToHide(slidesToHide(slidesToHide(sidebarLegendIds, "#sidebar-legend-first"),"#sidebar-legend-second"),"#sidebar-legend-label-first"),"#sidebar-legend-label-second"));
+        $('#sidebar-legend-label-first').text('Male Residents');
+        $('#sidebar-legend-label-second').text('Female Residents');
       }break;
       case "male": {
         demoFeatureLayer.setStyle(function(features){
@@ -174,11 +182,17 @@ var slideTwo = function(){
       }break;
       case "race": {
         demoFeatureLayer.setStyle(function(features){
-          return slideTwodefaultStyle();
+          return slideDefaultStyle('#fff2cb');
         });
         $('.legend').hide();
         setGraphVisibility(graphIds, '#raceGraph');
         createPieChart("raceGraph",racePieData);
+        _.each(sidebarLegendIds, function(datum){
+          $(datum).show();
+        });
+        $('#sidebar-legend-label-first').text('White Residents');
+        $('#sidebar-legend-label-second').text('African American Residents');
+        $('#sidebar-legend-label-third').text('Asian Residents');
       }break;
       case "white": {
         demoFeatureLayer.setStyle(function(features){
@@ -216,95 +230,70 @@ The third slide shows the crime distibution.It allows users to search for crimin
 insidents based on location, and type of crime, crime details are in the pop up.
 
 ==============================================================================*/
-
-var slideThreedefaultStyle = function(){
-  return {
-    weight: 2,
-    opacity: 1,
-    color: "white",
-    dashArray: '3',
-    fillOpacity: 0.7,
-    fillColor: "#c6dbef"
-  };
-}
-
-var selectTractTypeMonth = function(tract, type, month){
-  return _.filter(dataCrime.features, function(data){
-    return parseFloat(data.properties.Month) === parseFloat(month)
-    && parseFloat(data.properties.Tract) === parseFloat(tract)
-    && data.properties.Type === type;
-  });
-};
-
-var createCrimeMarkers = function(data, customIcon) {
-  return _.map(data, function(datum){
-    return L.marker([datum.geometry.coordinates[1], datum.geometry.coordinates[0]], {icon: customIcon});
-  });
-};
-
-var plotCrimeMarkers = function(data){
-  _.each(data, function(datum){
-    datum.addTo(map);
-  });
-};
-
-var clearCrimeMarker = function(data){
-  _.each(data, function(datum){
-    map.removeLayer(datum);
-  });
-  markersCrime=[];
-  selectedCrime = [];
-  console.log(markersCrime);
-  console.log(selectedCrime);
-  $('#crimeTractDropDown').val("blank");
-  $('#crimeTypeDropDown').val("blank");
-  $('#crimeMonthDropDown').val("blank");
-};
-
 var slideThree = function (){
-  $('.legend').hide();
-  $('#slideOne-1').hide();
-  $('#slideOne-2').hide();
-  $('#slideOne').hide();
-  $('#slideTwo').hide();
-  $('#slideThree').show();
-  $('#slideFour').hide();
-  $('#slideFive').hide();
-  pageNumber = 3;
-  map.setView([39.9522, -75.1639],15);
-  layerThree = L.geoJson(dataDemographics, {style: slideThreedefaultStyle}).addTo(map);
-
+  //Define some variables that will be used only in this function
   var tract;
-  var month;
   var type;
-
+  var month;
+  var cCon = false;
+  var tCon = false;
+  var mCon = false;
+  //Some initializations of this slide
+  hideSlides(slidesToHide(sidebarSlideIds, '#slideThree'));
+  slideInitialize(15, 3);
+  layerThree = L.geoJson(dataDemographics, {style: slideDefaultStyle('#c6dbef')}).addTo(map);
+  //store the changes in dropdowns and checkboxes
   $('#crimeTractDropDown').change(function(){
     tract = $('#crimeTractDropDown').val();
   });
-
   $('#crimeTypeDropDown').change(function(){
     type = $('#crimeTypeDropDown').val();
   });
-
   $('#crimeMonthDropDown').change(function(){
     month = $('#crimeMonthDropDown').val();
   });
-
+  $('#ck-Crime-Census-Tract').change(function(){
+    cCon = $('#ck-Crime-Census-Tract').prop("checked");
+  });
+  $('#ck-Crime-Type').change(function(){
+    tCon = $('#ck-Crime-Type').prop("checked");
+  });
+  $('#ck-Crime-Month').change(function(){
+    mCon = $('#ck-Crime-Month').prop("checked");
+  });
+  //Click the search button, crimes are plotted based on the filter(dropdowns/checkboxes)
   $('#crimeSearchButton').click(function(){
-    selectedCrime = selectTractTypeMonth(tract, type, month);
-    if (selectedCrime.length === 0){
+    markersCrime = _.chain(dataCrime.features)
+      .filter(function(datum){
+        if(cCon === true && tCon === true && mCon === true){ return datum.length !== 0;}
+        if(cCon === true && tCon === false && mCon === false){ return datum.properties.Type === type && parseFloat(datum.properties.Month) === parseFloat(month);}
+        if(cCon === false && tCon === true && mCon === false){ return parseFloat(datum.properties.Tract) === parseFloat(tract) && parseFloat(datum.properties.Month) === parseFloat(month);}
+        if(cCon === false && tCon === false && mCon === true){ return parseFloat(datum.properties.Tract) === parseFloat(tract) && datum.properties.Type === type;}
+        if(cCon === true && tCon === true && mCon === false){ return parseFloat(datum.properties.Month) === parseFloat(month);}
+        if(cCon === true && tCon === false && mCon === true){ return datum.properties.Type === type;}
+        if(cCon === false && tCon === true && mCon === true){ return parseFloat(datum.properties.Tract) === parseFloat(tract);}
+        if(cCon === false && tCon === false && mCon === false){ return parseFloat(datum.properties.Tract) === parseFloat(tract) && datum.properties.Type === type && parseFloat(datum.properties.Month) === parseFloat(month);}
+      })
+      .map(function(datum) {
+        return L.marker([datum.geometry.coordinates[1], datum.geometry.coordinates[0]], {icon: L.divIcon({className: 'crime-icon'})}).addTo(map);
+      }).value();
+
+    if(markersCrime.length === 0){
       alert("Good! No criminal incidents in your selection!");
     }
-    else{
-      markersCrime = createCrimeMarkers(selectedCrime, L.divIcon({className: 'crime-icon'}));
-      plotCrimeMarkers(markersCrime);
-      console.log(markersCrime);
-      console.log(selectedCrime);
-    }
   });
-
+  //Click the clear search button, the markers are removed
   $('#clearCrimeSearchButton').click(function(){
-    clearCrimeMarker(markersCrime);
+    _.each(markersCrime, function(marker){
+      map.removeLayer(marker);
+    });
+    markersCrime=[];
+    $('#crimeTractDropDown').val("blank");
+    $('#crimeTypeDropDown').val("blank");
+    $('#crimeMonthDropDown').val("blank");
+    $('#ck-Crime-Census-Tract').prop("checked", false);
+    $('#ck-Crime-Type').prop("checked", false);
+    $('#ck-Crime-Month').prop("checked", false);
   });
 };
 
@@ -388,7 +377,6 @@ var clearAllMarker = function(markers){
 var schoolMarker=[];
 
 var slideFour = function (){
-  clearCrimeMarker(markersCrime);
   $('.legend').hide();
   $('#slideOne-1').hide();
   $('#slideOne-2').hide();

@@ -58,64 +58,87 @@
           <canvas id="whiteGraph" height="450px" width="600px"></canvas>
           <canvas id="blackGraph" height="450px" width="600px"></canvas>
           <canvas id="asianGraph" height="450px" width="600px"></canvas>
-    		</div>
-      </div>
+          <table>
+            <tr>
+              <td><div id="sidebar-legend-first"></div></td>
+              <td id="sidebar-legend-label-first">Lable 1</td>
+            </tr>
+            <tr>
+              <td><div id="sidebar-legend-second"></div></td>
+              <td id="sidebar-legend-label-second">Label 2</td>
+            </tr>
+            <tr>
+              <td><div id="sidebar-legend-third"></div></td>
+              <td id="sidebar-legend-label-third">Label 3</td>
+            </tr>
+          </table>
+        </div>
+    	</div>
       <div id = "slideThree">
         <h1>3. Criminal Incidents</h1>
         <p class="main"> In this slide, you will get to know the criminal incidents happened in 2014 by crime type
         and by month in the census tract level.</p>
         <h4 class = "note"><i>*Please use all the conditions in the below drop down.</i></h4>
         <h4 class = "note"><i>**CLEAR SEARCH <u>BEFORE</u> NAVIGATING TO OTHER PAGES!**</i></h4>
-        <select class = "dropDown" id="crimeTractDropDown">
-          <option value="blank">Census Tract</option>
-          <option value="1.00">&nbsp1</option>
-          <option value="2.00">&nbsp2</option>
-          <option value="3.00">&nbsp3</option>
-          <option value="4.01">&nbsp4.01</option>
-          <option value="4.02">&nbsp4.02</option>
-          <option value="5.00">&nbsp5</option>
-          <option value="6.00">&nbsp6</option>
-          <option value="7.00">&nbsp7</option>
-          <option value="8.01">&nbsp8.01</option>
-          <option value="8.03">&nbsp8.03</option>
-          <option value="8.04">&nbsp8.04</option>
-          <option value="9.01">&nbsp9.01</option>
-          <option value="9.02">&nbsp9.02</option>
-          <option value="10.01">&nbsp10.01</option>
-          <option value="10.02">&nbsp10.02</option>
-          <option value="11.01">&nbsp11.01</option>
-          <option value="11.02">&nbsp11.02</option>
-          <option value="12.01">&nbsp12.01</option>
-          <option value="12.02">&nbsp12.02</option>
-          <option value="125.00">&nbsp125</option>
-          <option value="367.00">&nbsp367</option>
-          <option value="376.00">&nbsp376</option>
-        </select>
-        <br><br>
-        <select class = "dropDown" id="crimeTypeDropDown">
-          <option value="blank">Crime Types</option>
-          <option value="Aggravated Assault">&nbspAggravated Assault</option>
-          <option value="Burglary">&nbspBurglary</option>
-          <option value="Homicide">&nbspHomicide</option>
-          <option value="Thefts">&nbspThefts</option>
-          <option value="Robbery">&nbspRobbery</option>
-        </select>
-        <br><br>
-        <select class = "dropDown" id="crimeMonthDropDown">
-          <option value="blank">Month</option>
-          <option value="1">&nbspJanuary</option>
-          <option value="2">&nbspFebruary</option>
-          <option value="3">&nbspMarch</option>
-          <option value="4">&nbspApril</option>
-          <option value="5">&nbspMay</option>
-          <option value="6">&nbspJune</option>
-          <option value="7">&nbspJuly</option>
-          <option value="8">&nbspAugust</option>
-          <option value="9">&nbspSeptember</option>
-          <option value="10">&nbspOctober</option>
-          <option value="11">&nbspNovember</option>
-          <option value="12">&nbspDecember</option>
-        </select>
+        <table height="200px;">
+          <tr>
+            <td align="left"><select class = "dropDown" id="crimeTractDropDown">
+                  <option value="blank">Census Tract</option>
+                  <option value="1.00">&nbsp1</option>
+                  <option value="2.00">&nbsp2</option>
+                  <option value="3.00">&nbsp3</option>
+                  <option value="4.01">&nbsp4.01</option>
+                  <option value="4.02">&nbsp4.02</option>
+                  <option value="5.00">&nbsp5</option>
+                  <option value="6.00">&nbsp6</option>
+                  <option value="7.00">&nbsp7</option>
+                  <option value="8.01">&nbsp8.01</option>
+                  <option value="8.03">&nbsp8.03</option>
+                  <option value="8.04">&nbsp8.04</option>
+                  <option value="9.01">&nbsp9.01</option>
+                  <option value="9.02">&nbsp9.02</option>
+                  <option value="10.01">&nbsp10.01</option>
+                  <option value="10.02">&nbsp10.02</option>
+                  <option value="11.01">&nbsp11.01</option>
+                  <option value="11.02">&nbsp11.02</option>
+                  <option value="12.01">&nbsp12.01</option>
+                  <option value="12.02">&nbsp12.02</option>
+                  <option value="125.00">&nbsp125</option>
+                  <option value="367.00">&nbsp367</option>
+                  <option value="376.00">&nbsp376</option>
+              </select></td>
+            <td align="left"><input type="checkbox" id="ck-Crime-Census-Tract" value="CensusTract">All Census Tracts</td>
+          </tr>
+          <tr>
+            <td align="left"><select class = "dropDown" id="crimeTypeDropDown">
+                  <option value="blank">Crime Types</option>
+                  <option value="Aggravated Assault">&nbspAggravated Assault</option>
+                  <option value="Burglary">&nbspBurglary</option>
+                  <option value="Homicide">&nbspHomicide</option>
+                  <option value="Thefts">&nbspThefts</option>
+                  <option value="Robbery">&nbspRobbery</option>
+              </select></td>
+            <td align="left"><input type="checkbox" id="ck-Crime-Type" value="CensusTract">All Crime Types</td>
+          </tr>
+          <tr>
+            <td align="left"><select class = "dropDown" id="crimeMonthDropDown">
+                  <option value="blank">Month</option>
+                  <option value="1">&nbspJanuary</option>
+                  <option value="2">&nbspFebruary</option>
+                  <option value="3">&nbspMarch</option>
+                  <option value="4">&nbspApril</option>
+                  <option value="5">&nbspMay</option>
+                  <option value="6">&nbspJune</option>
+                  <option value="7">&nbspJuly</option>
+                  <option value="8">&nbspAugust</option>
+                  <option value="9">&nbspSeptember</option>
+                  <option value="10">&nbspOctober</option>
+                  <option value="11">&nbspNovember</option>
+                  <option value="12">&nbspDecember</option>
+                </select></td>
+            <td align="left"><input type="checkbox" id="ck-Crime-Month" value="CensusTract">All Months</td>
+          </tr>
+        </table>
         <br><br>
         <input type="button" id="crimeSearchButton" value ="Search"></input>
         <input type="button" id="clearCrimeSearchButton" value = "Clear Search"></input>
@@ -189,23 +212,23 @@
       <div id="legend-title">Title</div>
       <table>
         <tr>
-          <td><div id="legend-first"><div></td>
+          <td><div id="legend-first"></div></td>
           <td id="label-first">Lable 1</td>
         </tr>
         <tr>
-          <td><div id="legend-second"><div></td>
+          <td><div id="legend-second"></div></td>
           <td id="label-second">Label 2</td>
         </tr>
         <tr>
-          <td><div id="legend-third"><div></td>
+          <td><div id="legend-third"></div></td>
           <td id="label-third">Label 3</td>
         </tr>
         <tr>
-          <td><div id="legend-fourth"><div></td>
+          <td><div id="legend-fourth"></div></td>
           <td id="label-fourth">Label 4</td>
         </tr>
         <tr>
-          <td><div id="legend-fifth"><div></td>
+          <td><div id="legend-fifth"></div></td>
           <td id="label-fifth">Label 5</td>
         </tr>
       </table>

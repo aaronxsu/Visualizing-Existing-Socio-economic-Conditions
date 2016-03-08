@@ -61,8 +61,8 @@ h1{
   position: absolute;
   background-color: #fff;
   z-index: 2000;
-  right:5px;
-  bottom:5px;
+  left:505px;
+  top:75px;
   margin: 5px;
   padding:10px 10px 10px 10px;
   border: 1px solid #ccc;
@@ -209,6 +209,18 @@ td:last-child{
 
 #legend-fifth{
   background-color: #fc4e2a;
+}
+
+#sidebar-legend-first{
+  background-color: #b3cde3;
+}
+
+#sidebar-legend-second{
+  background-color: #fbb4ae;
+}
+
+#sidebar-legend-third{
+  background-color: #decbe4;
 }
 
 .leaflet-marker-icon {
