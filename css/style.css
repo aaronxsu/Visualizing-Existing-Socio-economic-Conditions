@@ -1,20 +1,20 @@
 body {
     padding: 0;
     overflow: hidden;
-    font-family: calibri light;
+    font-family: 'Open Sans', sans-serif;;
     text-align: justify;
 }
 
 p.main {
-  font-size: 26px;
+  font-size: 20px;
 }
 
 p.second {
-  font-size: 22px;
+  font-size: 16px;
 }
 
 h1{
-  font-family: gotham light;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .note{
@@ -24,10 +24,10 @@ h1{
 .header {
   position:absolute;
   padding-left: 50px;
-  height: 70px;
+  height: 8%;
   width:100%;
   background-color: black;
-  font-family: verdana;
+  font-family: 'Source Serif Pro', serif;
   color:white;
 }
 
@@ -36,13 +36,13 @@ h1{
     right: 0px;
     left: 0px;
     height: 100%;
-    top: 70px;
+    top:8%;
 }
 
 .sidebar {
     left: 0px;
-    width: 500px;
-    top: 70px;
+    width: 20%;
+    top: 8%;
     bottom: 0;
     overflow-y: auto;
     padding-left: 50px;
@@ -89,9 +89,11 @@ td:last-child{
   color: #67c446;
   background-color: #ffffff;
   border: 3px solid #a4dc90;
+  left:10%;
+  bottom:10%;
 }
 .dropDown{
-  font-size: 20px;
+  font-size: 18px;
   overflow:hidden;
   width:150px;
   height:30px;
@@ -129,12 +131,13 @@ td:last-child{
 }
 
 .ck-table,
-.bss-table{
-  font-size: 20px;
+.bss-table,
+.ci-table{
+  font-size: 16px;
 }
 
 #clearSchoolMarker{
-  width: 130px;
+  width: 150px;
   height:35px;
   font-weight: bold;
   font-size: 18px;
@@ -164,7 +167,7 @@ td:last-child{
 }
 
 .navigation-btn{
-  font-family: gotham light;
+  font-family: 'Montserrat', sans-serif;
   width: 150px;
   height:50px;
   font-weight: bold;
@@ -181,14 +184,14 @@ td:last-child{
 
 #previous-button{
   position:absolute;
-  bottom:20px;
-  left:20px;
+  bottom:3%;
+  left:10%;
 }
 
 #next-button{
   position:absolute;
-  bottom:20px;
-  left:330px;
+  bottom:3%;
+  left:60%;
 }
 
 #legend-first{

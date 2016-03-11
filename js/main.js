@@ -13,13 +13,6 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
 var sidebarSlideIds = ['.legend','#slideOne','#slideOne-1','#slideOne-2','#slideTwo','#slideThree','#slideFour','#slideFive'];
 var pageNumber = 0;
 
-var layerOne;
-var layerTwo;
-var layerThree;
-var layerFour;
-var layerFive;
-
-var indegoMarkers = [];
 
 /*==============================================================================
 
@@ -29,6 +22,7 @@ Below are data for the first slide
 
 var censusTractPhiladelphia = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Philadelphia_Census_Tracts_2010.geojson";
 var dataPhiladelphia;
+var layerOne;
 
 /*==============================================================================
 
@@ -39,6 +33,7 @@ Below are data for the second slide
 //geoJson data
 var censusTractCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/CenterCityTracts_Demographic.geojson";
 var dataDemographics;
+var layerTwo;
 
 //store sidebar graph ids
 var graphIds = ['#popGraph','#sexGraph','#maleGraph','#femaleGraph','#raceGraph','#whiteGraph','#blackGraph','#asianGraph'];
@@ -169,6 +164,7 @@ var sexPieData = [
 var crimeCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/Crime2014CC.geojson";
 var dataCrime;
 var markersCrime = [];
+var layerThree;
 
 
 /*==============================================================================
@@ -178,6 +174,9 @@ var markersCrime = [];
 ==============================================================================*/
 
 var schoolCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/SchoolsInCenterCity.geojson";
+var dataSchool;
+var schoolMarker=[];
+var layerFour;
 
 /*==============================================================================
 
@@ -186,3 +185,6 @@ var schoolCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-t
 ==============================================================================*/
 
 var indegoBikeShareCenterCity = "https://raw.githubusercontent.com/aronxoxo/CPLN690-Mid-term_Project/master/datasets/BikeShareInCenterCity.geojson";
+var dataBikeShare;
+var markersIndego = [];
+var layerFive;

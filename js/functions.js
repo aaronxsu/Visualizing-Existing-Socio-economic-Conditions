@@ -60,6 +60,9 @@ var slideOne = function (){
   slideInitialize(11, 1);
   hideSlides(slidesToHide(slidesToHide(sidebarSlideIds, '#slideOne'),'#slideOne-1'));
   layerOne = L.geoJson(dataPhiladelphia, {style: slideDefaultStyle('#edf8e9')}).addTo(map);
+  clearBikeShareSearch();
+  $('#tractName').text("");
+  $('#tractPop').text("");
   //Once "Let's get started button" is clicked, show the new sidebar,
   //remove the previous layer, zoom in the map, and add the click function
   //to the layer
@@ -135,6 +138,7 @@ var setGraphVisibility = function (data, element){
 };
 
 var slideTwo = function(){
+  clearCrimeSearch();
   slideInitialize(15, 2);
   hideSlides(slidesToHide(sidebarSlideIds, '#slideTwo'));
   var demoFeatureLayer = L.geoJson(dataDemographics, {style: slideDefaultStyle('#fff2cb')}).addTo(map);
@@ -230,7 +234,24 @@ The third slide shows the crime distibution.It allows users to search for crimin
 insidents based on location, and type of crime, crime details are in the pop up.
 
 ==============================================================================*/
+
+var clearCrimeSearch = function(){
+  slideInitialize(15, 3);
+  _.each(markersCrime, function(marker){
+    map.removeLayer(marker);
+  });
+  markersCrime=[];
+  $('#crimeTractDropDown').val("blank");
+  $('#crimeTypeDropDown').val("blank");
+  $('#crimeMonthDropDown').val("blank");
+  $('#ck-Crime-Census-Tract').prop("checked", false);
+  $('#ck-Crime-Type').prop("checked", false);
+  $('#ck-Crime-Month').prop("checked", false);
+};
+
 var slideThree = function (){
+  clearAllSchoolMarker();
+  $('#crimeSearchButton').off();
   //Define some variables that will be used only in this function
   var tract;
   var type;
@@ -275,7 +296,11 @@ var slideThree = function (){
         if(cCon === false && tCon === false && mCon === false){ return parseFloat(datum.properties.Tract) === parseFloat(tract) && datum.properties.Type === type && parseFloat(datum.properties.Month) === parseFloat(month);}
       })
       .map(function(datum) {
-        return L.marker([datum.geometry.coordinates[1], datum.geometry.coordinates[0]], {icon: L.divIcon({className: 'crime-icon'})}).addTo(map);
+        var popup = "<b>"+datum.properties.Type+"</b><br>";
+        popup += "<i>"+datum.properties.Location+"</i><br>";
+        popup += "Month: "+"<u>"+datum.properties.Month+"</u><br>";
+        popup += "Census Tract: "+"<u>"+datum.properties.Tract+"</u>";
+        return L.marker([datum.geometry.coordinates[1], datum.geometry.coordinates[0]], {icon: L.divIcon({className: 'crime-icon'})}).addTo(map).bindPopup(popup).openPopup();
       }).value();
 
     if(markersCrime.length === 0){
@@ -284,16 +309,7 @@ var slideThree = function (){
   });
   //Click the clear search button, the markers are removed
   $('#clearCrimeSearchButton').click(function(){
-    _.each(markersCrime, function(marker){
-      map.removeLayer(marker);
-    });
-    markersCrime=[];
-    $('#crimeTractDropDown').val("blank");
-    $('#crimeTypeDropDown').val("blank");
-    $('#crimeMonthDropDown').val("blank");
-    $('#ck-Crime-Census-Tract').prop("checked", false);
-    $('#ck-Crime-Type').prop("checked", false);
-    $('#ck-Crime-Month').prop("checked", false);
+    clearCrimeSearch();
   });
 };
 
@@ -304,17 +320,6 @@ The fourth slide shows different types of schools in the census tract level. Use
 can click and see detailed information in the sidebar
 
 ==============================================================================*/
-
-var slideFourdefaultStyle = function(){
-  return {
-    weight: 2,
-    opacity: 1,
-    color: "white",
-    dashArray: '3',
-    fillOpacity: 0.7,
-    fillColor: "#bcbddc"
-  };
-}
 
 function school (name, address, zipcode, phone, type, lat, lng){
   this.name = name;
@@ -351,14 +356,15 @@ var createSchoolMarker = function (school, customIcon){
 };
 
 var clearSchoolMarker = function(markers){
+  console.log("clear one");
   _.each(markers, function(data){
     map.removeLayer(data);
   });
   markers=[];
 };
 
-var clearAllMarker = function(markers){
-  _.each(markers, function(data){
+var clearAllSchoolMarker = function(){
+  _.each(schoolMarker, function(data){
     _.each(data, function(datum){
       map.removeLayer(datum);
     });
@@ -371,23 +377,16 @@ var clearAllMarker = function(markers){
   $('#ck-Elem-Middle').prop("checked", false);
   $('#ck-Middle-High').prop("checked", false);
   $('#ck-Elem-Mid-High').prop("checked", false);
-  $('#ck-ck-Tutoring').prop("checked", false);
+  $('#ck-Tutoring').prop("checked", false);
 };
 
-var schoolMarker=[];
-
 var slideFour = function (){
-  $('.legend').hide();
-  $('#slideOne-1').hide();
-  $('#slideOne-2').hide();
-  $('#slideOne').hide();
-  $('#slideTwo').hide();
-  $('#slideThree').hide();
-  $('#slideFour').show();
-  $('#slideFive').hide();
-  pageNumber = 4;
-  map.setView([39.9522, -75.1639],15);
-  layerFour = L.geoJson(dataDemographics, {style: slideFourdefaultStyle}).addTo(map);
+  clearCrimeSearch();
+  clearBikeShareSearch();
+  hideSlides(slidesToHide(sidebarSlideIds, '#slideFour'));
+  slideInitialize(15, 4);
+  layerFour = L.geoJson(dataDemographics, {style: slideDefaultStyle('#bcbddc')}).addTo(map);
+
   var levelK = schoolLevel("Kindergarten");
   var levelP = schoolLevel("Pre-school");
   var levelE = schoolLevel("Elementary School");
@@ -396,12 +395,22 @@ var slideFour = function (){
   var levelMH = schoolLevel("Middle/High");
   var levelEMH = schoolLevel("Elem/Mid/High");
   var levelT = schoolLevel("Tutoring");
+  var markerK = [];
+  var markerP = [];
+  var markerE = [];
+  var markerH = [];
+  var markerEM = [];
+  var markerMH = [];
+  var markerEMH = [];
+  var markerT = [];
+
 
   $('#ck-Kindergarten').change(function(){
     if($('#ck-Kindergarten').prop("checked") === true){
       schoolMarker.push(markerK = createSchoolMarker(levelK, L.divIcon({className: 'Kindergarten'})));
     }
     else{
+      console.log("unchecked");
       clearSchoolMarker(markerK);
     }
   });
@@ -462,8 +471,7 @@ var slideFour = function (){
     }
   });
   $('#clearSchoolMarker').click(function(){
-    console.log(schoolMarker);
-    clearAllMarker(schoolMarker);
+    clearAllSchoolMarker();
   });
 };
 
@@ -475,86 +483,32 @@ search-based slide.
 
 ==============================================================================*/
 
-var slideFivedefaultStyle = function(){
-  return {
-    weight: 2,
-    opacity: 1,
-    color: "white",
-    dashArray: '3',
-    fillOpacity: 0.7,
-    fillColor: "#fee4da"
-  };
-}
-
-var bikeFilter = function(data, num){
-  return _.filter(data, function(datum){
-    return datum.properties.bikesAvailable >= num;
+var clearBikeShareSearch = function (){
+  _.each(markersIndego, function(marker){
+    map.removeLayer(marker);
   });
-};
-
-var dockFilter = function(data, num){
-  return _.filter(data, function(datum){
-    return datum.properties.docksAvailable >= num;
-  });
-};
-
-var filterBikeDock= function (data, bikeNum, docNum){
-  return _.filter(data, function(datum){
-    return datum.properties.bikesAvailable >= bikeNum && datum.properties.docksAvailable >= docNum;
-  });
-};
-
-var indegoCreatePlotMarker = function(data, customIcon){
-  return _.map(data, function(datum){
-    var marker = L.marker([datum.geometry.coordinates[1],datum.geometry.coordinates[0]], {icon: customIcon});
-    var popup = "<b>"+datum.properties.name+"</b><br>";
-    popup += "<i>"+datum.properties.addressStreet+", ";
-    popup += datum.properties.addressCity+", ";
-    popup += datum.properties.addressState+" ";
-    popup += datum.properties.addressZipCode+"</i><br>";
-    popup += "<b>Avaiblable Bikes: </b>"+"<u>"+datum.properties.bikesAvailable+"</u><br>";
-    popup += "<b>Avaiblable Docks: </b>"+"<u>"+datum.properties.docksAvailable+"</u><br>";
-    marker.addTo(map).bindPopup(popup).openPopup();
-    return marker;
-  });
-};
-
-var clearIndegoMarker = function(data){
-  _.each(data, function(datum){
-    map.removeLayer(datum);
-  });
-  data=[];
+  markersIndego=[];
   $('#bike-num-input').val("");
   $('#ck-bike').prop("checked", false);
   $('#dock-num-input').val("");
   $('#ck-dock').prop("checked", false);
 };
 
+
 var slideFive = function (){
-  clearIndegoMarker(indegoMarkers);
-  clearAllMarker(schoolMarker);
-  $('.legend').hide();
-  $('#slideOne-1').hide();
-  $('#slideOne-2').hide();
-  $('#slideOne').hide();
-  $('#slideTwo').hide();
-  $('#slideThree').hide();
-  $('#slideFour').hide();
-  $('#slideFive').show();
-  pageNumber = 5;
-  map.setView([39.9522, -75.1639],15);
-  layerFive = L.geoJson(dataDemographics, {style:slideFivedefaultStyle}).addTo(map);
+  clearAllSchoolMarker();
+  $('#searchBikeShare-btn').off();
+  hideSlides(slidesToHide(sidebarSlideIds, '#slideFive'));
+  slideInitialize(15, 5);
+  layerFive = L.geoJson(dataDemographics, {style: slideDefaultStyle('#fee4da')}).addTo(map);
 
-
-  var filteredIndego = [];
   var bikeNumber;
   var dockNumber;
   var bikeCondition = false;
   var dockCondition = false;
 
   $('#bike-num-input').change(function(){
-    filteredIndego = [];
-    bikeNumber = $('#bike-num-input').val();
+    bikeNumber = parseFloat($('#bike-num-input').val());
   });
 
   $('#ck-bike').change(function(){
@@ -562,7 +516,7 @@ var slideFive = function (){
   });
 
   $('#dock-num-input').change(function(){
-    dockNumber = $('#dock-num-input').val();
+    dockNumber = parseFloat($('#dock-num-input').val());
   });
 
   $('#ck-dock').change(function(){
@@ -570,28 +524,28 @@ var slideFive = function (){
   });
 
   $('#searchBikeShare-btn').click(function(){
-    if(bikeCondition === true && dockCondition === false){
-      filteredIndego = dockFilter(dataBikeShare.features, dockNumber);
+    markersIndego = _.chain(dataBikeShare.features)
+      .filter(function(datum){
+        if(bikeCondition === true && dockCondition === false){ return datum.properties.docksAvailable >= dockNumber;}
+        if(bikeCondition === false && dockCondition === true){ return datum.properties.bikesAvailable >= bikeNumber;}
+        if(bikeCondition === false && dockCondition === false){console.log("both false"); return datum.properties.docksAvailable >= dockNumber && datum.properties.bikesAvailable >= bikeNumber; }
+        if(bikeCondition === true && dockCondition === true){ return datum.length !== 0;}
+      })
+      .map(function(datum) {
+        var popup = "<b>"+datum.properties.name+"</b><br>";
+        popup += "<i>"+datum.properties.addressStreet+", ";
+        popup += datum.properties.addressCity+", ";
+        popup += datum.properties.addressState+" ";
+        popup += datum.properties.addressZipCode+"</i><br>";
+        popup += "<b>Avaiblable Bikes: </b>"+"<u>"+datum.properties.bikesAvailable+"</u><br>";
+        popup += "<b>Avaiblable Docks: </b>"+"<u>"+datum.properties.docksAvailable+"</u><br>";
+        return L.marker([datum.geometry.coordinates[1], datum.geometry.coordinates[0]], {icon: L.divIcon({className: 'bike-icon'})}).addTo(map).bindPopup(popup).openPopup()
+      }).value();
+    if(markersIndego.length === 0){
+      alert("No current stations satisfy your conditions. Please clear the search and try again.");
     }
-    else if(bikeCondition === false && dockCondition === true){
-      filteredIndego = bikeFilter(dataBikeShare.features, bikeNumber);
-    }
-    else if(bikeCondition === false && dockCondition === false){
-      filteredIndego = filterBikeDock(dataBikeShare.features, bikeNumber, dockNumber);
-    }
-    else if(bikeCondition === true && dockCondition === true){
-      filteredIndego = dataBikeShare.features;
-    }
-    else{
-      alert("Input Error! Please Double Check!");
-    }
-    indegoMarkers = indegoCreatePlotMarker(filteredIndego, L.divIcon({className: 'bike-icon'}));
   });
-
-  $('#clearBikeShare-btn').click(function(e){
-    console.log(indegoMarkers);
-    console.log(indegoMarkers[0]);
-    console.log(typeof(indegoMarkers[0]));
-    clearIndegoMarker(indegoMarkers);
+  $('#clearBikeShare-btn').click(function(){
+    clearBikeShareSearch();
   });
 };
