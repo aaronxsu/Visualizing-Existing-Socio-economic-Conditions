@@ -1,6 +1,6 @@
 # Visualizing Existing Socio-economic Conditions
 **View this web map hosted by GitHub Pages:**
-- [Existing Conditions in Center City](https://aronxoxo.github.io/Visualizing-Existing-Socio-economic-Conditions/)
+- [Existing Conditions in Center City](https://aaronxsu.github.io/Visualizing-Existing-Socio-economic-Conditions/)
 
 **This interactive web-map/app takes you through the following characteristics of the Center City Area of City of Philadelphia:**
 - Population, gender, and race distribution on census tract level.
